@@ -25,9 +25,22 @@ shinyUI(fluidPage(
                            "South America" = "samerica"))
         ),
 
-        # Show the map
+        # Show two tabs: one with the map and one with the documentation
         mainPanel(
-            leafletOutput("map")
+            tabsetPanel(type = "tabs",
+                        tabPanel("Map", leafletOutput("map")),
+                        tabPanel("Help", h2("How to use the app"), br(), 
+                                 "Simply input the range of population 
+                                   using the two-ended slider and select 
+                                   the part of the world you'd like to focus 
+                                   on. The map will update automatically.",
+                                 br(), h2("Data"), br(),
+                                 "The data on the world cities comes from the",
+                                 a(href="https://simplemaps.com/data/world-cities",
+                                   "simplemaps.com"),
+                                 "website. We used the Basic database. The 
+                                 database was updated in 2019."))
+            
         )
     )
 ))
