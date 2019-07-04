@@ -1,0 +1,46 @@
+---
+title: "World cities by population"
+author: "Maria Ronacher"
+date: "7/3/2019"
+output: ioslides_presentation
+---
+
+## Objective
+
+This tiny Shiny app lets you display all world cities with population in the given range and with a focus on a chosen area.
+
+We had to set the lower limit to 100,000 people due to the memory limitations on the free Shinyapps plan.
+
+## Data
+
+The data on the world cities comes from the [simplemaps.com](https://simplemaps.com/data/world-cities) website. We used the Basic database. The database was updated in 2019.
+
+```{r}
+df <- read.csv("worldcities.csv", sep=",")
+colnames(df)
+nrow(df[!is.na(df$population), ])
+```
+
+## How to use the app
+
+Simply input the range of population using the two-ended slider and select the part of the world you'd like to focus on. The map will update automatically.
+
+## Output
+
+The map will look like this:
+```{r, echo=FALSE, message = FALSE}
+library(dplyr)
+library(leaflet)
+df_sub <- df %>% filter(population %in% (5000000:10000000))
+mymap <- leaflet(df_sub)
+mymap <- mymap %>%
+        addTiles() %>%
+        setView(lng=16.4365448, 
+                lat=2.6112207, 
+                zoom=3) %>%
+        addMarkers(popup = paste("Country:", df_sub$country, "<br>",
+                                 "City:", df_sub$city, "<br>",
+                                 "Population:", df_sub$population))
+mymap
+```
+<font size="3">Population range: 5,000,000 - 10,000,000; focus: Africa</font>
